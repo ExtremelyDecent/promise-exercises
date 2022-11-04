@@ -2,27 +2,22 @@ let favoriteNumber = 3;
 let APIURL = "http://numbersapi.com";
 
 //1.
-async function getNumberInfo(){
-    let data = await $.getJSON(`${APIURL}/${favoriteNumber}?json`);
+$.getJSON(`${baseURL}/${favortieNumber}?json`).then(data => {
     console.log(data);
-};
-getNumberInfo();
+});
 
-//2.
-const favoriteNumbers = [3,5,7];
-async function getNumbersInfo(){
-    let data = await $.getJSON(`${APIURL}/${favoriteNumbers}?json`);
+// 2.
+let favoriteNumbers = [7, 11, 22];
+$.getJSON(`${baseURL}/${favoriteNumbers}?json`).then(data => {
     console.log(data);
-}
-getNumbersInfo();
+});
 
-//3.
-async function multiFacts(){
-    let facts = await Promise.all(
-        Array.from({ length: 4 }, () => $.getJSON(`${APIURL}/${favoriteNumber}?json`))
-    );
-    facts.forEach(data => {
-        $('body').append(`<p>${data.text}</p>`);
-    });
-}
-multiFacts();
+// 3.
+Promise.all(
+    Array.from({ length: 4 }, () => {
+        return $.getJSON(`${baseURL}/${favoriteNumber}?json`);
+    })
+).then(facts => {
+    facts.forEach(data => $("body").append(`<p>${data.text}</p>`));
+});
+  
